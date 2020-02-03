@@ -24,6 +24,7 @@ public final class SQLiteLocationContract {
         public static final String COLUMN_NAME_ALTITUDE = "altitude";
         public static final String COLUMN_NAME_LATITUDE = "latitude";
         public static final String COLUMN_NAME_LONGITUDE = "longitude";
+        public static final String COLUMN_NAME_BATTERY = "battery";
         public static final String COLUMN_NAME_RADIUS = "radius";
         public static final String COLUMN_NAME_HAS_ACCURACY = "has_accuracy";
         public static final String COLUMN_NAME_HAS_SPEED = "has_speed";
@@ -46,6 +47,7 @@ public final class SQLiteLocationContract {
                         LocationEntry.COLUMN_NAME_ALTITUDE + REAL_TYPE + COMMA_SEP +
                         LocationEntry.COLUMN_NAME_LATITUDE + REAL_TYPE + COMMA_SEP +
                         LocationEntry.COLUMN_NAME_LONGITUDE + REAL_TYPE + COMMA_SEP +
+                        LocationEntry.COLUMN_NAME_BATTERY + REAL_TYPE + COMMA_SEP +
                         LocationEntry.COLUMN_NAME_RADIUS + REAL_TYPE + COMMA_SEP +
                         LocationEntry.COLUMN_NAME_HAS_ACCURACY + INTEGER_TYPE + COMMA_SEP +
                         LocationEntry.COLUMN_NAME_HAS_SPEED + INTEGER_TYPE + COMMA_SEP +

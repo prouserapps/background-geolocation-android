@@ -9,6 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.util.TimeUtils;
 
+import com.marianhello.bgloc.BatteryManager;
 import com.marianhello.bgloc.data.sqlite.SQLiteLocationContract;
 import com.marianhello.bgloc.data.sqlite.SQLiteLocationContract.LocationEntry;
 
@@ -26,6 +27,7 @@ public class BackgroundLocation implements Parcelable {
     private String provider;
     private double latitude = 0.0;
     private double longitude = 0.0;
+    private double battery = 0.0;
     private long time = 0;
     private long elapsedRealtimeNanos = 0;
     private float accuracy = 0.0f;
@@ -88,6 +90,7 @@ public class BackgroundLocation implements Parcelable {
         provider = l.provider;
         latitude = l.latitude;
         longitude = l.longitude;
+        battery = l.battery;
         time = l.time;
         elapsedRealtimeNanos = l.elapsedRealtimeNanos;
         accuracy = l.accuracy;
@@ -114,6 +117,7 @@ public class BackgroundLocation implements Parcelable {
         l.provider = in.readString();
         l.latitude = in.readDouble();
         l.longitude = in.readDouble();
+        l.battery = in.readDouble();
         l.time = in.readLong();
         l.elapsedRealtimeNanos = in.readLong();
         l.accuracy = in.readFloat();
@@ -187,6 +191,7 @@ public class BackgroundLocation implements Parcelable {
         }
         l.setLatitude(c.getDouble(c.getColumnIndex(LocationEntry.COLUMN_NAME_LATITUDE)));
         l.setLongitude(c.getDouble(c.getColumnIndex(LocationEntry.COLUMN_NAME_LONGITUDE)));
+        l.setBattery(c.getDouble(c.getColumnIndex(LocationEntry.COLUMN_NAME_BATTERY)));
         l.setLocationProvider(c.getInt(c.getColumnIndex(LocationEntry.COLUMN_NAME_LOCATION_PROVIDER)));
         l.setBatchStartMillis(c.getLong(c.getColumnIndex(LocationEntry.COLUMN_NAME_BATCH_START_MILLIS)));
         l.setStatus(c.getInt(c.getColumnIndex(LocationEntry.COLUMN_NAME_STATUS)));
@@ -209,6 +214,7 @@ public class BackgroundLocation implements Parcelable {
         dest.writeString(provider);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
+        dest.writeDouble(battery);
         dest.writeLong(time);
         dest.writeLong(elapsedRealtimeNanos);
         dest.writeFloat(accuracy);
@@ -341,6 +347,19 @@ public class BackgroundLocation implements Parcelable {
         this.longitude = longitude;
     }
 
+    /**
+     * Get the battery
+     * */
+    public double getBattery() {
+        return battery;
+    }
+
+    /**
+     * Set the battery
+     * */
+    public void setBattery(double battery) {
+        this.battery = battery;
+    }
 
     /**
      * Return the UTC time of this fix, in milliseconds since January 1, 1970.
@@ -771,18 +790,6 @@ public class BackgroundLocation implements Parcelable {
 
     /**
      * Check if given location is better that instance
-     * @param location to compare is android Location
-     * @return true if location is better and false if not
-     */
-    public boolean isBetterLocationThan(Location location) {
-        if (location == null) {
-            return true;
-        }
-        return !isBetterLocation(new BackgroundLocation(location), this);
-    }
-
-    /**
-     * Check if given location is better that instance
      * @param location to compare
      * @return true if location is better and false if not
      */
@@ -806,6 +813,7 @@ public class BackgroundLocation implements Parcelable {
         StringBuilder s = new StringBuilder();
         s.append("BGLocation[").append(provider);
         s.append(String.format(" %.6f,%.6f", latitude, longitude));
+        s.append(String.format(" battery=$.6f", battery));
         s.append(" id=").append(locationId);
         if (hasAccuracy) {
             s.append(String.format(" acc=%.0f", accuracy));
@@ -849,6 +857,7 @@ public class BackgroundLocation implements Parcelable {
         json.put("time", time);
         json.put("latitude", latitude);
         json.put("longitude", longitude);
+        json.put("battery", battery);
         if (hasAccuracy) json.put("accuracy", accuracy);
         if (hasSpeed) json.put("speed", speed);
         if (hasAltitude) json.put("altitude", altitude);
@@ -886,6 +895,7 @@ public class BackgroundLocation implements Parcelable {
         values.put(LocationEntry.COLUMN_NAME_ALTITUDE, altitude);
         values.put(LocationEntry.COLUMN_NAME_LATITUDE, latitude);
         values.put(LocationEntry.COLUMN_NAME_LONGITUDE, longitude);
+        values.put(LocationEntry.COLUMN_NAME_BATTERY, battery);
         values.put(LocationEntry.COLUMN_NAME_RADIUS, radius);
         values.put(LocationEntry.COLUMN_NAME_HAS_ACCURACY, hasAccuracy);
         values.put(LocationEntry.COLUMN_NAME_HAS_SPEED, hasSpeed);
@@ -918,6 +928,9 @@ public class BackgroundLocation implements Parcelable {
         }
         if ("@longitude".equals(key)) {
             return longitude;
+        }
+        if ("@battery".equals(key)) {
+            return battery;
         }
         if ("@accuracy".equals(key)) {
             return hasAccuracy ? accuracy : JSONObject.NULL;

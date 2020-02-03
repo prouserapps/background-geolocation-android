@@ -54,6 +54,7 @@ public class LocationTemplateFactory {
         attrs.put("time", "@time");
         attrs.put("latitude", "@latitude");
         attrs.put("longitude", "@longitude");
+        attrs.put("battery", "@battery");
         attrs.put("accuracy", "@accuracy");
         attrs.put("speed", "@speed");
         attrs.put("altitude", "@altitude");

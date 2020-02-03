@@ -19,6 +19,7 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 import com.google.android.gms.location.DetectedActivity;
+import com.marianhello.bgloc.BatteryManager;
 import com.marianhello.bgloc.Config;
 import com.marianhello.bgloc.PluginException;
 import com.marianhello.bgloc.data.BackgroundActivity;
@@ -96,6 +97,7 @@ public abstract class AbstractLocationProvider implements LocationProvider {
         playDebugTone(Tone.BEEP);
         if (mDelegate != null) {
             BackgroundLocation bgLocation = new BackgroundLocation(PROVIDER_ID, location);
+            bgLocation.setBattery(BatteryManager.getBatteryPercentage(mContext));
             bgLocation.setMockLocationsEnabled(hasMockLocationsEnabled());
             mDelegate.onLocation(bgLocation);
         }
@@ -111,6 +113,7 @@ public abstract class AbstractLocationProvider implements LocationProvider {
         playDebugTone(Tone.LONG_BEEP);
         if (mDelegate != null) {
             BackgroundLocation bgLocation = new BackgroundLocation(PROVIDER_ID, location);
+            bgLocation.setBattery(BatteryManager.getBatteryPercentage(mContext));
             bgLocation.setRadius(radius);
             bgLocation.setMockLocationsEnabled(hasMockLocationsEnabled());
             mDelegate.onStationary(bgLocation);
@@ -126,6 +129,7 @@ public abstract class AbstractLocationProvider implements LocationProvider {
         playDebugTone(Tone.LONG_BEEP);
         if (mDelegate != null) {
             BackgroundLocation bgLocation = new BackgroundLocation(PROVIDER_ID, location);
+            bgLocation.setBattery(BatteryManager.getBatteryPercentage(mContext));
             bgLocation.setMockLocationsEnabled(hasMockLocationsEnabled());
             mDelegate.onStationary(bgLocation);
         }
